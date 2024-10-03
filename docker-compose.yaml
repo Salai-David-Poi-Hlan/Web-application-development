@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Node.js service
+  nodejs:
+    build: .
+    container_name: nodejs-app
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=your_mysql_root_password
+      - MYSQL_DATABASE=test
+    depends_on:
+      - mysql
+    networks:
+      - proj_network
+  # MySQL service
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: your_mysql_root_password
+      MYSQL_DATABASE: test
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./test.sql:/docker-entrypoint-initdb.d/test.sql
+    networks:
+      - proj_network
+volumes:
+  mysql_data:
+networks:
+      proj_network:

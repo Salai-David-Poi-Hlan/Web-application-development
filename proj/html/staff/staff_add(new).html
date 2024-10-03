@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add&Edit</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.33/dist/sweetalert2.all.min.js"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.8.0/dist/sweetalert2.all.min.js"></script>
+    <script src="/proj/js/notiflix-aio-3.2.6.min.js"></script>
+    <style>
+        #top {
+            background-color: navy;
+            color: white;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            padding-left: 2rem;
+            font-weight: bolder;
+        }
+
+        i.icon-intro {
+            font-size: 1rem;
+        }
+
+        #nav {
+            padding-left: 4rem;
+            padding-right: 4rem;
+        }
+
+        nav a {
+            /* position: fixed; */
+            /* font-size: 16px; */
+            color: black;
+            text-decoration: none;
+            /* font-weight: 500; */
+            margin-left: 25px;
+            transition: .3s;
+            /* justify-content: space-between; */
+            /* align-items: center; */
+            z-index: 100;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #FFC700;
+        }
+
+        .card-text {
+            text-align: center;
+            font-weight: bolder;
+            margin: 0;
+        }
+
+        .card {
+            margin: 0;
+            padding: 0;
+        }
+
+        #card {
+            padding-left: 4rem;
+            padding-right: 4rem;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+
+        .card {
+            filter: drop-shadow(10px 10px 4px rgba(0, 0, 0, 0.25));
+            border-radius: 20px;
+        }
+
+        .body-card li {
+            display: inline-block;
+        }
+
+        .block {
+            display: block;
+            border-radius: 20px;
+            background-color: #d2cece;
+            padding: 14px 28px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+        }
+
+        .add-button {
+            color: black;
+            font-size: 1.5rem;
+        }
+
+        /* button {
+            filter: drop-shadow(10px 10px 4px rgba(0, 0, 0, 0.25));
+        } */
+
+        #footer {
+            background-color: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
+            padding: 1rem;
+            text-align: center;
+            text-decoration: none;
+            border-top: black;
+        }
+
+        .modal-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 380px;
+            width: 100%;
+            background-color: rgb(204, 194, 194);
+            border-radius: 18px;
+            padding: 30px 20px;
+            filter: drop-shadow(10px 10px 4px rgba(0, 0, 0, 0.25));
+            opacity: 0;
+            position: fixed;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-box p {
+            margin-top: 20px;
+            font-size: 400;
+        }
+
+        .modal-box button {
+            padding: 6px 12px;
+            margin: 0 30px;
+        }
+
+        .modal-box.show {
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        #disable {
+            background: none;
+            border-radius: none;
+            border: none;
+        }
+
+        form {
+            /* width: 150px; */
+            /* height: 44px; */
+            border-radius: 10px 10px;
+            /* display: flex; */
+            /* flex-direction: row; */
+            align-items: center;
+            /* text-align: center; */
+            /* padding-top: 2rem; */
+        }
+
+        input {
+            font: 16px system-ui;
+            color: #000000;
+            height: 100%;
+            width: 100%;
+            padding: 6px 10px;
+        }
+
+        #query {
+            /* all: unset; */
+            font: 16px system-ui;
+            color: #000000;
+            height: 100%;
+            width: 100%;
+            padding: 6px 10px;
+            text-align: center;
+        }
+
+        #bsearch {
+            /* all: unset; */
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- TOP -->
+    <div class="container-fluid p-2" style="background-color: darkblue;">
+        <div class="container">
+            <iconify-icon icon="bx:book" width="30" style="color: #FFC700;"></iconify-icon>
+            <h1 class="text-white mx-3" style="display: inline;">Room Reservation</h1>
+        </div>
+    </div>
+    <!-- <div class="col" id="top">
+            <i class="bi bi-journals text-warning"></i> Room Reservation
+        </div> -->
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand bg-light shadow-sm" id="nav">
+        <div class="col"></div>
+        <!-- search BAR -->
+        <form class="col-sm-6" style="border-radius: 10px 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;">
+            <input type="search" id="query" name="q" placeholder="Search " class="form-control">
+            <button class="bi bi-search" id="bsearch" style=" all: unset;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;"></button>
+        </form>
+
+        <div class="col-auto">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="/staff_home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/staff_add" class="active">Add/Edit</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/staff_dashboard">Dasboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/staff_history">History</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/staff_profile"><iconify-icon icon="gg:profile" width="30"></iconify-icon></i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container d-flex justify-content-end p-3">
+        <button class="btn btn-success" onclick="addRoom()">Add</button>
+    </div>
+
+    <div class="container">
+        <table class="table table-striped">
+            <thead class="text-white" style="background: darkblue;">
+                <tr>
+                    <th>Room Number</th>
+                    <th>Building</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tblRoom">
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Modal Add Body -->
+    <div class="modal" id="addModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background: darkblue;">
+                    <h5 class="modal-title text-white">Add Room Reservation</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="formRoom">
+                        <!-- <div class="text-center">
+                            <a href="" class="nav-link text-dark"><i class="bi bi-plus-lg"></i><br>image</a>
+                        </div> -->
+
+                        <label class="form-label">Room no.</label>
+                        <input type="text" name="number" class="form-control mb-2">
+
+                        <label class="form-label">Building</label>
+                        <input type="text" name="building" class="form-control mb-2">
+
+                        <label class="form-label">Room Description</label><br>
+                        <textarea class="form-control" name="description" cols="100" rows="3"></textarea>
+                        <div class="modal-footer mt-3">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add Body -->
+    <!-- <div class="modal fade" id="modalAdd" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: darkblue;">
+                    <h5 class="modal-title text-white">Add Room Reservation</h5>
+                    
+                </div>
+                <div class="modal-body">
+                    <div class="text-center py-5">
+                        <a href="" class="nav-link text-dark"><i class="bi bi-plus-lg "></i><br>
+                            image
+                        </a>
+                    </div>
+                    <label for="numRoom">Room no.</label>
+                    <input type="text" id="numRoom" class="form-control">
+                    <label for="building">Building</label>
+                    <input type="text" id="building" class="form-control">
+                    <label for="description">Room Description</label><br>
+                    <textarea class="form-control" name="description" id="description" cols="100" rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnSave" type="button" class="btn btn-primary"><a href=""
+                            class="nav-link text-white">Save</a></button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+    <!-- Modal Edit Body -->
+    <div class="modal" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background: darkblue;">
+                    <h5 class="modal-title text-white">Edit Room Reservation</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="formRoom2">
+                        <!-- <div class="text-center">
+                            <a href="" class="nav-link text-dark"><i class="bi bi-plus-lg"></i><br>image</a>
+                        </div> -->
+
+                        <label class="form-label">Room no.</label>
+                        <input type="text" name="number2" class="form-control mb-2">
+
+                        <label class="form-label">Building</label>
+                        <input type="text" name="building2" class="form-control mb-2">
+
+                        <label class="form-label">Room Description</label><br>
+                        <textarea class="form-control" name="description2" cols="100" rows="3"></textarea>
+                        <div class="modal-footer mt-3">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Disable Body -->
+    <div class="modal fade" id="modalDisable" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background: darkblue;">
+                    <!-- <h5 class="modal-title text-white"></h5> -->
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                </div>
+                <div class="modal-body">
+                    <h3 class="text-center">Disable?</h3>
+                    <p class="text-center">Are you sure, you want to disable this room?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnDisable" type="submit" class="btn btn-primary">Disable</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL Disable-->
+    <!-- <div class="modal-box shadow" id="modal_box">
+        <h1>Disable?</h1>
+        <p>Are you sure, you want to disable this room?</p>
+        <div>
+            <button class="btn btn-danger">
+                Disable
+            </button>
+            <button class="btn btn-primary" id="cancle">
+                Cancle
+            </button>
+        </div>
+    </div> -->
+
+    <!-- footer -->
+    <div class="container-fluid mt-3 p-3" style="box-shadow: 0 -4px 6px -6px #222;">
+        <div class="container text-center" style="font-size: small;">
+            copyright @ Group-6 MFU-23. All rights reserved.
+        </div>
+    </div>
+
+    <script>
+        // const main = document.querySelector('#main');
+
+        // ----------- function to create product cards ----------------
+        // function createCard(room) {
+        //     const card = document.createElement('div');
+        //     card.className = "card m-4";
+        //     let cardDetail = '<div class="card-body">';
+        //     cardDetail += `<ul class="body-card">`;
+        //     cardDetail += `<li><a class="bi bi-pencil-square text-warning icon-intro" style="font-size: 30px;"
+        //                      data-bs-toggle="modal" data-bs-target="#modalEdit"></a></li>`;
+        //     cardDetail += `<li><p class="card-text">${room.num}</p><p class="card-text">${room.building}</p></li>`;
+        //     cardDetail += `<button class="btn btn-danger" onclick="data-bs-toggle="modal" data-bs-target="#modalDisable"">disable</button>`;
+        //     // cardDetail += `<li><a class="bi bi-ban text-danger icon-intro" style="font-size: 30px;" data-bs-toggle="modal" data-bs-target="#modalDisable"></a></li>`;
+        //     cardDetail += `</ul></div>`;
+        //     card.innerHTML = cardDetail;
+        //     return card;
+        // }        
+
+
+
+        // ------------ add button clicked --------------------
+        // document.querySelector('#btnAdd').onclick = function () {
+        //     // clear modal
+        //     document.querySelector('#roomNumber').value = "";
+        //     document.querySelector('#building').value = "";
+        //     // show modal
+        //     modalAddEdit.show();
+        //     // update modal title
+        //     document.querySelector('#')
+        // }
+
+
+
+        // <div class="card m-4" style="width: 20rem;">
+        //     <div class="card-body">
+        //         <ul class="body-card">
+        //             <li>
+        //                 <a href="" class="bi bi-pencil-square text-warning icon-intro" style="font-size: 30px;"
+        //                     data-bs-toggle="modal" data-bs-target="#modalEdit"></a>
+        //             </li>
+        //             <li>
+        //                 <p class="card-text">Room No - S7A(403)</p>
+        //                 <p class="card-text">Building - S7</p>
+        //             </li>
+        //             <li>
+        //                         <!-- <a href="" class="bi bi-ban text-danger icon-intro" style="font-size: 30px;" id="disable"></a> -->
+        //                 <a href="" class="bi bi-ban text-danger icon-intro" style="font-size: 30px;"
+        //                     data-bs-toggle="modal" data-bs-target="#modalDisable"></a>
+        //             </li>
+        //         </ul>
+        //     </div>
+        // </div>
+
+
+        // add or edit methods
+        var action = 'add';
+        var action = 'edit';
+        // edit product ID
+        var editID = 0;
+        //get all rooms
+        getRooms();
+        //add&edit modal
+        const addModal = new bootstrap.Modal(document.querySelector('#addModal'));
+        const editModal = new bootstrap.Modal(document.querySelector('#editModal'));
+
+        // --------------- GET ROOMS -------------------
+        function getRooms() {
+            // get product data from server
+            fetch('/rooms')
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw Error('Bad response');
+                })
+                .then(function (data) {
+                    let rows = '';
+                    data.forEach(function (rooms) {
+                        rows += `<tr><td>${rooms.room_Number}</td>`;
+                        rows += `<td>${rooms.building}</td>`;
+                        rows += `<td>${rooms.description}</td>`;
+                        console.log(JSON.stringify(rooms));
+                        rows += `<td><button class="btn btn-warning" onclick=editRoom(${JSON.stringify(rooms)})>Edit</button>`;
+                        rows += `<button class="btn btn-danger m-2" onclick=disableRoom(${JSON.stringify(rooms)})>Disable</button></td></tr>`;
+                    });
+                    tblRoom.innerHTML = rows;
+                })
+                .catch(function (err) {
+                    console.error(err);
+                    alert(err);
+                });
+        }
+        
+        // -------------------- ADD NEW ROOM -------------------------
+        const formRoom = document.querySelector('#formRoom');
+        function addRoom() {
+            action = 'add';
+            formRoom.reset();
+            //document.querySelector('h4.modal-title').innerText = 'Add newroom';
+            addModal.show();
+        }
+
+        // add
+        formRoom.onsubmit = function (e) {
+            e.preventDefault();
+            addModal.hide();
+            console.log('lee');
+            const pNum = document.querySelector('input[name="number"]').value;
+            console.log(pNum);
+            const building = document.querySelector('input[name="building"]').value;
+            console.log(building);
+            const description = document.querySelector('textarea[name="description"]').value;
+            let url = '/rooms';
+            let httpMethod = 'POST';
+            let bodyContent = JSON.stringify(
+                { "room_Number": pNum, "building": building, "description": description }
+            );
+            if (action == 'edit') {
+                url = `/rooms_update`;
+                httpMethod = 'PUT';
+                bodyContent = JSON.stringify(
+                    { "room_Number": pNum, "building": building, "description": description }
+                );
+            }
+
+            fetch(url, {
+                method: httpMethod,
+                headers: { "Content-Type": "application/json" },
+                body: bodyContent
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        formRoom.reset();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Add room successfully'
+                        })
+                            .then(function (result) {
+                                // get update data
+                                getRooms();
+                            });
+                    }
+                    else {
+                        throw Error('Bad response');
+                    }
+                })
+                .catch(function (err) {
+                    console.error(err);
+                    alert(err);
+                });
+        }
+
+        // -------------------- EDIT ROOM -------------------------
+        const formRoom2 = document.querySelector('#formRoom2');
+        //console.log('hi form2');
+        function editRoom(rooms) {
+            console.log(rooms.room_Number);
+            console.log("lee pl");
+            action = 'edit';
+            formRoom2.reset();
+            document.querySelector('input[name="number2"]').value = rooms.room_Number;
+            document.querySelector('input[name="building2"]').value = rooms.building;
+            document.querySelector('textarea[name="description2"]').value = rooms.description;
+            //document.querySelector('h4.modal-title').innerText = 'Add newroom';
+            editModal.show();
+        }
+
+        // edit
+        formRoom2.onsubmit = function (e) {
+            e.preventDefault();
+            editModal.hide();
+            // console.log('lee');
+            
+            // console.log(product.name);
+            //document.querySelector('h4.modal-title').innerText = 'Edit room';
+            //document.querySelector('input[name="number2"]').value = rooms.room_Number;
+            //document.querySelector('input[name="building2"]').value = rooms.building;
+            //document.querySelector('textarea[name="description2"]').value = rooms.description;
+            // show modal
+            editModal.show();
+             const pNum = document.querySelector('input[name="number2"]').value;
+            // console.log(pNum);
+             const building = document.querySelector('input[name="building2"]').value;
+             console.log(building);
+             const description = document.querySelector('textarea[name="description2"]').value;
+            let url = '/rooms_update';
+            let httpMethod = 'PUT';
+            let bodyContent = JSON.stringify(
+                { "room_Number": pNum, "building": building, "description": description }
+            );
+            
+
+
+            fetch(url, {
+                method: httpMethod,
+                headers: { "Content-Type": "application/json" },
+                body: bodyContent
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        formRoom2.reset();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Edit room successfully'
+                        })
+                            .then(function (result) {
+                                // get update data
+                                getRooms();
+                            });
+                    }
+                    else {
+                        throw Error('Bad response');
+                    }
+                })
+                .catch(function (err) {
+                    console.error(err);
+                    alert(err);
+                });
+        }
+
+        
+    </script>
+
+</body>
+
+</html>
